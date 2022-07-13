@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Sociallogin</string>
+
+    <string name="title_facebook_fragment">Facebook</string>
+    <string name="title_google_fragment">Google+</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_in_with_twitter">Sign in with Twitter</string>
+    <string name="sign_in_with_linked_in">Sign in with LinkedIn</string>
+    <string name="share_twitter">Twitter Share</string>
+    <string name="sign_in_with_fb">Sign in with Facebook</string>
+    <string name="share_fb">Facebook Share</string>
+    <string name="facebook_app_id">343806254444849</string>
+
+    <string name="facebook_client_token">43e1e7c37db0d6ed56fe70285e362eb4</string>
+</resources>
