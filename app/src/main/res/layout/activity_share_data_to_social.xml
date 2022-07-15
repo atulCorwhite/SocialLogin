@@ -14,6 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"/>
     <LinearLayout
+        android:id="@+id/uparLayout"
         android:layout_below="@+id/logoImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,7 +52,7 @@
 
 
         <TextView
-
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/main_name_txt"
@@ -84,15 +85,26 @@
             android:layout_height="50dp"
             android:layout_below="@+id/main_fb_share_button"
             android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/bg_btn_linked_in"
             android:gravity="center"
             android:text="@string/share_twitter"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textAllCaps="false"/>
+            android:textSize="16sp" />
 
 
+        <Button
+            android:id="@+id/LogoutB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/main_linked_in_sign_in_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="115dp"
+            android:text="Logout" />
 
     </RelativeLayout>
 </RelativeLayout>

@@ -3,10 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.21574074074074073" />
         <entry key="app/src/main/res/drawable/bg_btn_facebook.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable/bg_btn_facebook_normal.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable/bg_btn_google_plus.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/bg_btn_google_plus_normal.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/bg_btn_google_plus_pressed.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/bg_btn_linked_in.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/bg_btn_linked_in_normal.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/bg_btn_linked_in_pressed.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/bg_btn_twitter.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/bg_btn_twitter_normal.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/bg_btn_twitter_pressed.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/ic_baseline_link_24.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable/rounded_corner.xml" value="0.1165" />
+        <entry key="app/src/main/res/layout/activity_face_log_in.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_share_data_to_social.xml" value="0.21" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1" />

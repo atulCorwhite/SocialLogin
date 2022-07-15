@@ -9,17 +9,21 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.facebook.FacebookSdk
-import com.facebook.GraphResponse
+import com.facebook.*
+import com.facebook.CallbackManager.Factory.create
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import org.json.JSONException
+import java.util.*
+
 
 class MainActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListener,OnFbSignInListener {
    lateinit var  progressBar:ProgressBar
-   lateinit var  userName:TextView
-   lateinit var  email:TextView
 
-    //Google plus sign-in button
+
+   //Google plus sign-in button
     private var googleSignInHelper: GoogleSignInHelper? = null
     lateinit var gSignInButton: Button
     private var isFbLogin = false
@@ -28,11 +32,13 @@ class MainActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListen
     // facebook///:::::::::::::::
     private var fbConnectHelper: FacebookHelper? = null
     lateinit var fbSignInButton: Button
-    lateinit var fbShareButton: Button
-
+    lateinit var  loginButton:LoginButton
 
     private val TAG = MainActivity::class.java.simpleName
     private val URL = "https://github.com/rajivmanivannan/Android-Social-Login"
+
+    private var callbackManager: CallbackManager? = null
+    private val EMAIL = "email"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +47,6 @@ class MainActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListen
         FacebookSdk.sdkInitialize(context);
 
         progressBar = findViewById(R.id.progress_bar)
-
-        userName = findViewById(R.id.main_name_txt)
-        email = findViewById(R.id.main_email_txt)
         gSignInButton = findViewById(R.id.main_g_sign_in_button)
 
         //----------------------------------Google +Sign in-----------------------------------//
@@ -58,22 +61,34 @@ class MainActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListen
 
 
         //--------------------------------Facebook login--------------------------------------//
-
-        //--------------------------------Facebook login--------------------------------------//
+        callbackManager = CallbackManager.Factory.create()
+        loginButton = findViewById(R.id.login_button);
+        loginButton.setReadPermissions(Arrays.asList(EMAIL));
         KeyHashGenerator.generateKey(this)
         fbConnectHelper = FacebookHelper(this, this)
         fbSignInButton = findViewById(R.id.fb_sign_in_button)
-        fbShareButton = findViewById(R.id.main_fb_share_button)
+        loginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult) {
+                val intent = Intent(this@MainActivity, ShareDataToSocial::class.java)
+                intent.putExtra("user_name", "User Id:-"+result.accessToken.userId)
+                intent.putExtra("user_email", "")
+                startActivity(intent)
+            }
+            override fun onCancel() {
+                // App code
+            }
 
-        fbSignInButton.setOnClickListener {
+            override fun onError(exception: FacebookException) {
+                // App code
+                Log.e("datraa","datraaError")
+            }
+        })
+
+/*        fbSignInButton.setOnClickListener {
             progressBar.visibility = View.VISIBLE
             fbConnectHelper!!.connect()
             isFbLogin = true
-        }
-        fbShareButton.setOnClickListener {
-            val fbConnectHelper = FacebookHelper(this)
-           // fbConnectHelper.shareOnFBWall("Social Login", "Android Facebook and Google+ Login", URL)
-        }
+        }*/
 
     }
 
@@ -84,9 +99,6 @@ class MainActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListen
     override fun OnGSignInSuccess(googleSignInAccount: GoogleSignInAccount?) {
         progressBar.visibility = View.GONE
         if (googleSignInAccount != null) {
-            userName.text = googleSignInAccount.givenName + googleSignInAccount.familyName
-            email.text = googleSignInAccount.email
-
             Log.e("name:>>>>>",googleSignInAccount.givenName + googleSignInAccount.photoUrl)
             val intent = Intent(this@MainActivity, ShareDataToSocial::class.java)
             intent.putExtra("user_name", googleSignInAccount.givenName)
@@ -99,11 +111,15 @@ class MainActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListen
     override fun OnGSignInError(error: String?) {
 
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         googleSignInHelper?.onActivityResult(requestCode, resultCode, data)
         fbConnectHelper!!.onActivityResult(requestCode, resultCode, data)
+
+        callbackManager?.onActivityResult(
+            requestCode,
+            resultCode,
+            data);
     }
 
     override fun OnFbSignInComplete(graphResponse: GraphResponse?, error: String?) {
@@ -111,8 +127,8 @@ class MainActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListen
         if (error == null) {
             try {
                 val jsonObject = graphResponse!!.getJSONObject()
-                userName.text = jsonObject!!.getString("name")
-                email.text = jsonObject!!.getString("email")
+              /*  userName.text = jsonObject!!.getString("name")
+                email.text = jsonObject!!.getString("email")*/
                 val id = jsonObject!!.getString("id")
                 val profileImg = "http://graph.facebook.com/$id/picture?type=large"
             } catch (e: JSONException) {

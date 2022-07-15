@@ -54,11 +54,10 @@ class FacebookHelper /*( activity: Activity, fbSignInListener: OnFbSignInListene
         // Instantiate Google SignIn Client.
         callbackManager = create()
         loginManager = LoginManager.getInstance()
-
         if (activity != null) {
             loginManager!!.logInWithReadPermissions(activity!!, permissions)
         } else {
-            loginManager!!.logInWithReadPermissions(fragment!!, permissions)
+          /*  loginManager!!.logInWithReadPermissions(fragment!!, permissions)
             loginManager!!.registerCallback(
                 callbackManager,
                 object : FacebookCallback<LoginResult> {
@@ -70,16 +69,48 @@ class FacebookHelper /*( activity: Activity, fbSignInListener: OnFbSignInListene
                     }
 
                     override fun onCancel() {
+                        Log.e("data","dataaa")
                     }
 
                     override fun onError(exception: FacebookException) {
+                        Log.e("data","dataaa")
 
                     }
-                })
+                })*/
+
+
+
+
+
+
+            ////new code
+
+
+            loginManager!!.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+                override fun onSuccess(result: LoginResult) {
+                    Log.e("datraa","FaceBookHelper")
+                    callGraphAPI(result.accessToken)
+                    /*   val intent = Intent(this@MainActivity, ShareDataToSocial::class.java)
+                       intent.putExtra("user_name", "")
+                       intent.putExtra("user_email", "")*/
+                   // startActivity(intent)
+                }
+
+                override fun onCancel() {
+                    // App code
+                }
+
+                override fun onError(exception: FacebookException) {
+                    // App code
+                    Log.e("datraa","datraaError")
+                }
+            })
+
         }
     }
 
     private fun callGraphAPI(accessToken: AccessToken) {
+        Log.e("Data","dataaaaaaaaaaaaa")
         val request = GraphRequest.newMeRequest(accessToken,
             object : GraphRequest.GraphJSONObjectCallback {
                 override fun onCompleted(`object`: JSONObject?, response: GraphResponse?) {

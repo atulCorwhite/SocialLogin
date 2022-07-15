@@ -58,7 +58,9 @@ class GoogleSignInHelper {
         activity!!.startActivityForResult(signInIntent,RC_SIGN_IN)
     }
     fun signOut() {
-       googleSignInClient!!.signOut()
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+        val googleSignInClient = GoogleSignIn.getClient(activity!!, gso)
+        googleSignInClient.signOut()
     }
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RC_SIGN_IN && resultCode == Activity.RESULT_OK) {

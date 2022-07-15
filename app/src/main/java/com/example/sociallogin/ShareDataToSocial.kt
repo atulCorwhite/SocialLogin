@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
+import com.facebook.login.LoginManager
 import com.facebook.share.Sharer
 import com.facebook.share.model.SharePhoto
 import com.facebook.share.model.SharePhotoContent
@@ -38,6 +39,7 @@ class ShareDataToSocial : AppCompatActivity() {
     private var googleSignInHelper: GoogleSignInHelper? = null
 
     lateinit var builder:AlertDialog
+    lateinit var LogoutB: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +49,7 @@ class ShareDataToSocial : AppCompatActivity() {
         fbShareButton = findViewById(R.id.main_fb_share_button)
         main_name_txt = findViewById(R.id.main_name_txt)
         main_email_txt = findViewById(R.id.main_email_txt)
+        LogoutB = findViewById(R.id.LogoutB)
 
         val userName: String = intent.getStringExtra("user_name").toString()
         val email: String = intent.getStringExtra("user_email").toString()
@@ -55,13 +58,20 @@ class ShareDataToSocial : AppCompatActivity() {
         main_email_txt.text = email
 
         googleSignInHelper = GoogleSignInHelper(this)
-
         callbackManager = CallbackManager.Factory.create();
         shareDialog = ShareDialog(this)
          shareDialog!!.registerCallback(callbackManager!!,callback);
 
         fbShareButton.setOnClickListener {
             showDialog("FaceBook")
+
+        }
+        LogoutB.setOnClickListener {
+            LoginManager.getInstance().logOut();
+            googleSignInHelper!!.signOut()
+            val intent = Intent(this@ShareDataToSocial, MainActivity::class.java)
+            startActivity(intent)
+            finish()
 
         }
     }
@@ -148,8 +158,10 @@ class ShareDataToSocial : AppCompatActivity() {
         }
         videoLayout.setOnClickListener {
              val intent = Intent(Intent.ACTION_PICK,MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-              intent.type = "video/*";
+              intent.type = "image/* video/*";
+            intent.setAction(Intent.ACTION_SEND);
             startActivityForResult(intent, REQUEST_TAKE_GALLERY_VIDEO)
+
         }
         builder.setCanceledOnTouchOutside(true)
         builder.show()
