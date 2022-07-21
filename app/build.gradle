@@ -58,21 +58,15 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:14.1.0'
     implementation 'com.facebook.android:facebook-share:latest.release'
 
-
-   implementation ("com.twitter:twitter-api-java-sdk:2.0.2",
-    {
-        exclude group: 'com.google.guava'
-        exclude group:'javax.ws.rs'
-        exclude group:'org.apache.oltu.oauth2'
-    })
-
 // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:30.2.0')
+
 
     // When using the BoM, you don't specify versions in Firebase library dependencies
 
     // Declare the dependency for the Firebase SDK for Google Analytics
     implementation 'com.google.firebase:firebase-analytics-ktx'
+
 
 
 

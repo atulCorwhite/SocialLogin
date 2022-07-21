@@ -21,8 +21,6 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListener,OnFbSignInListener {
    lateinit var  progressBar:ProgressBar
-
-
    //Google plus sign-in button
     private var googleSignInHelper: GoogleSignInHelper? = null
     lateinit var gSignInButton: Button
@@ -83,12 +81,6 @@ class MainActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListen
                 Log.e("datraa","datraaError")
             }
         })
-
-/*        fbSignInButton.setOnClickListener {
-            progressBar.visibility = View.VISIBLE
-            fbConnectHelper!!.connect()
-            isFbLogin = true
-        }*/
 
     }
 

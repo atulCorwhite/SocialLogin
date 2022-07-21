@@ -1,12 +1,15 @@
 package com.example.sociallogin
 
+import android.R
 import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
@@ -23,6 +26,7 @@ import com.facebook.share.model.SharePhotoContent
 import com.facebook.share.model.ShareVideo
 import com.facebook.share.model.ShareVideoContent
 import com.facebook.share.widget.ShareDialog
+import java.util.*
 
 
 class ShareDataToSocial : AppCompatActivity() {
@@ -103,6 +107,7 @@ class ShareDataToSocial : AppCompatActivity() {
                 val cr: ContentResolver = this.getContentResolver()
                 val mime = cr.getType(selectedImageUri)
                 Log.e("mime::-------", mime+"")
+                shareOnFacebook(selectedImageUri)
                 if (mime.toString().contains("image")) {
                     val  photo: SharePhoto =  SharePhoto.Builder()
                         .setImageUrl(selectedImageUri)
@@ -159,12 +164,44 @@ class ShareDataToSocial : AppCompatActivity() {
         videoLayout.setOnClickListener {
              val intent = Intent(Intent.ACTION_PICK,MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
               intent.type = "image/* video/*";
-            intent.setAction(Intent.ACTION_SEND);
+         //   intent.setAction(Intent.ACTION_SEND);
             startActivityForResult(intent, REQUEST_TAKE_GALLERY_VIDEO)
 
         }
         builder.setCanceledOnTouchOutside(true)
         builder.show()
 
+    }
+
+    fun shareOnFacebook(fileUri: Uri?) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT,fileUri)
+        if (fileUri != null) {
+            intent.putExtra(Intent.EXTRA_STREAM, fileUri)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            intent.type = "image/*"
+        }
+        var facebookAppFound = false
+        val matches = packageManager.queryIntentActivities(
+            intent,
+            PackageManager.MATCH_DEFAULT_ONLY
+        )
+        for (info in matches) {
+            if (info.activityInfo.packageName.lowercase(Locale.getDefault())
+                    .startsWith("com.facebook.katana") ||
+                info.activityInfo.packageName.lowercase(Locale.getDefault())
+                    .startsWith("com.facebook.lite")
+            ) {
+                intent.setPackage(info.activityInfo.packageName)
+                facebookAppFound = true
+                break
+            }
+        }
+        if (facebookAppFound) {
+           startActivity(intent)
+        } else {
+
+        }
     }
 }
