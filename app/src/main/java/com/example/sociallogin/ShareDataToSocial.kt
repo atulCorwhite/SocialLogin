@@ -1,6 +1,5 @@
 package com.example.sociallogin
 
-import android.R
 import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.Intent
